@@ -1,0 +1,271 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  background: #111;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#game-root {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* ── PAD GRID ── */
+#pad-grid {
+  flex: 1 1 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 6px;
+  padding: 6px;
+  min-height: 0;
+}
+
+.pad-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border: none;
+  border-radius: 10px;
+  font-size: clamp(0.7rem, 3vw, 1.1rem);
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transition: filter 0.08s, transform 0.08s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.12);
+  position: relative;
+  overflow: hidden;
+  padding: 6px 4px;
+  word-break: break-word;
+  touch-action: manipulation;
+}
+
+.pad-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.08s;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.pad-btn:active::after,
+.pad-btn.flash::after {
+  background: rgba(255,255,255,0.28);
+}
+
+.pad-btn.flash {
+  transform: scale(0.96);
+  filter: brightness(1.25);
+}
+
+/* ── Screen colour themes (screens 1–8) ── */
+#pad-grid[data-screen="1"] .pad-btn { background: linear-gradient(135deg, #27ae60, #1e8449); color: #fff; }
+#pad-grid[data-screen="2"] .pad-btn { background: linear-gradient(135deg, #2980b9, #1a5276); color: #fff; }
+#pad-grid[data-screen="3"] .pad-btn { background: linear-gradient(135deg, #c0392b, #922b21); color: #fff; }
+#pad-grid[data-screen="4"] .pad-btn { background: linear-gradient(135deg, #ecf0f1, #bdc3c7); color: #222; }
+#pad-grid[data-screen="5"] .pad-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #222; }
+#pad-grid[data-screen="6"] .pad-btn { background: linear-gradient(135deg, #95a5a6, #717d7e); color: #fff; }
+#pad-grid[data-screen="7"] .pad-btn { background: linear-gradient(135deg, #e67e22, #ca6f1e); color: #fff; }
+#pad-grid[data-screen="8"] .pad-btn { background: linear-gradient(135deg, #f48fb1, #e91e8c); color: #fff; }
+
+/* ── Screen 9 — ADL: white buttons with dark text ── */
+#pad-grid[data-screen="9"] .pad-btn {
+  background: #ffffff;
+  color: #222;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* ── Screen 10 — Regulation: 4-column colour scheme ── */
+/* Column 1 = teal, Column 2 = light blue, Column 3 = blue, Column 4 = red */
+#pad-grid[data-screen="10"] .pad-btn[data-reg-col="1"] { background: linear-gradient(135deg, #00897b, #00695c); color: #fff; }
+#pad-grid[data-screen="10"] .pad-btn[data-reg-col="2"] { background: linear-gradient(135deg, #81d4fa, #4fc3f7); color: #222; }
+#pad-grid[data-screen="10"] .pad-btn[data-reg-col="3"] { background: linear-gradient(135deg, #1565c0, #0d47a1); color: #fff; }
+#pad-grid[data-screen="10"] .pad-btn[data-reg-col="4"] { background: linear-gradient(135deg, #e53935, #b71c1c); color: #fff; }
+
+/* ── Screen 11 — Questions: white ── */
+#pad-grid[data-screen="11"] .pad-btn {
+  background: #ffffff;
+  color: #1a1a2e;
+}
+
+/* ── TOP BAR ── */
+#top-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a2e;
+  padding: 8px 10px;
+  border-bottom: 2px solid #333;
+  min-height: 60px;
+  gap: 8px;
+}
+
+#top-nav-buttons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#top-nav-buttons-right {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+#board-title {
+  color: #ffffff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* ── MENU BAR ── */
+#menu-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1a1a2e;
+  padding: 8px 10px;
+  border-top: 2px solid #333;
+  gap: 6px;
+  min-height: 60px;
+}
+
+#screen-title {
+  color: #ffffff;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: clamp(1rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#nav-buttons {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+#nav-buttons-right {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* ── NAV BUTTONS ── */
+.nav-btn {
+  flex: 1;
+  max-width: 90px;
+  padding: 10px 6px;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #000;
+  background: #ffffff;
+  letter-spacing: 0.03em;
+  transition: background 0.15s, border-color 0.15s, transform 0.08s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.nav-btn:active {
+  transform: scale(0.95);
+}
+
+.nav-btn.active {
+  background: #FFD700;
+  border-color: #ccaa00;
+  color: #000;
+}
+
+/* Top-bar extra buttons — slightly smaller to fit neatly */
+.top-screen-btn {
+  max-width: 85px;
+  font-size: 0.75rem;
+}
+
+/* Regulation button — larger, wider, with emoji smileys */
+.regulation-btn {
+  max-width: none;
+  min-width: 180px;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+/* All screen buttons white by default, yellow when active */
+.screen-btn { border-color: #ccc; }
+.screen-btn.active { background: #FFD700; border-color: #ccaa00; color: #000; }
+
+/* ── RESPONSIVE: phones in portrait ── */
+@media (max-width: 480px) {
+  .nav-btn { padding: 9px 4px; font-size: 0.72rem; }
+  .top-screen-btn { font-size: 0.68rem; padding: 8px 4px; }
+  #pad-grid { gap: 4px; padding: 4px; }
+  #menu-bar { padding: 6px 8px; }
+  #top-bar { padding: 6px 8px; min-height: 48px; }
+  #board-title { font-size: clamp(0.75rem, 3.5vw, 1.1rem); }
+  #screen-title { font-size: clamp(0.75rem, 3.5vw, 1.1rem); }
+}
+
+/* ── LANDSCAPE: tighten bars so pads get more height ── */
+@media (orientation: landscape) and (max-height: 500px) {
+  #menu-bar { padding: 4px 8px; }
+  #top-bar { padding: 4px 8px; min-height: 44px; }
+  #screen-title { font-size: clamp(0.7rem, 3vw, 1rem); }
+  .nav-btn { padding: 6px 10px; font-size: 0.75rem; }
+  #pad-grid { gap: 3px; padding: 3px; }
+}
