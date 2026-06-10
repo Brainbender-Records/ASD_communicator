@@ -1,0 +1,1 @@
+The PDF and CSV sheets should be helpful in setting up a custom app with this. The csv can be used to help format the audio files in batch TTS or text to speech generators, use the name convention in the 2nd column. 
